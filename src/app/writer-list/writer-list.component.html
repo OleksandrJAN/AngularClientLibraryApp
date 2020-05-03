@@ -1,0 +1,41 @@
+<div *ngIf="errorMessage.status === 404; else errorMsg">
+    <app-not-found-page></app-not-found-page>
+</div>
+
+<ng-template #errorMsg>
+    <div *ngIf="errorMessage.status === 401; else writerTable">
+        <div class="alert alert-danger">{{errorMessage.message}}</div>
+    </div>
+</ng-template>
+
+
+<ng-template #writerTable>
+    <div class="card">
+        <div class="card-body">
+
+            <div class="form-group row" *ngIf="isAdmin">
+                <div class="col">
+                    <a class="btn btn-info" routerLink="/writers/add">Add new writer</a>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First name</th>
+                        <th scope="col">Last name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let writer of writers">
+                        <td>{{ writer.id }}</td>
+                        <td><a routerLink="/writers/{{writer.id}}">{{ writer.firstName }}</a></td>
+                        <td><a routerLink="/writers/{{writer.id}}">{{ writer.lastName }}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</ng-template>

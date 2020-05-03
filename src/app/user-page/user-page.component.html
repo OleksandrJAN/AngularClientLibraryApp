@@ -1,0 +1,41 @@
+<div *ngIf="errorMessage.status === 404; else errorMsg">
+    <app-not-found-page></app-not-found-page>
+</div>
+
+<ng-template #errorMsg>
+    <div *ngIf="errorMessage.status === 401; else userPage">
+        <div class="alert alert-danger">{{errorMessage.message}}</div>
+    </div>
+</ng-template>
+
+<ng-template #userPage>
+
+    <div class="card">
+        <div class="card-body">
+
+            <!-- Username -->
+            <div class="form-group row">
+                <div class="col-md-2">
+                    <label for="usernameInput" class="col-form-label">Username:</label>
+                </div>
+                <div class="col">
+                    <input type="text" [ngModel]="userProfile.username" class="form-control" id="usernameInput"
+                        name="username" readonly>
+                </div>
+            </div>
+
+            <!--Actions-->
+            <div class="form-group row mx-auto" *ngIf="isCurrentUserAdmin && currentUser.id !== userProfile.id">
+                <a class="btn btn-secondary ml-auto text-white" role="button" routerLink="settings">Settings</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- User Reviews -->
+    <div class="mt-5">
+        <app-review-list [currentUser]="currentUser" [isCurrentUserAdmin]="isCurrentUserAdmin" [reviews]="reviews"
+             [isUserPage]="true"></app-review-list>
+    </div>
+
+</ng-template>

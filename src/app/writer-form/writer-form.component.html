@@ -1,0 +1,54 @@
+<div *ngIf="errorMessage.status === 404; else errorMsg">
+    <app-not-found-page></app-not-found-page>
+</div>
+
+<ng-template #errorMsg>
+    <div *ngIf="errorMessage.status === 401 || errorMessage.status === 403; else form">
+        <div class="alert alert-danger">{{errorMessage.message}}</div>
+    </div>
+</ng-template>
+
+
+<ng-template #form>
+    <div class="card">
+        <div class="card-body">
+
+            <div *ngIf="errorMessage.status === 400">
+                <div class="alert alert-danger">{{errorMessage.message}}</div>
+            </div>
+
+            <form (ngSubmit)="onSubmit()" #writerForm="ngForm">
+                <!-- First Name -->
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label for="firstNameInput" class="col-form-label">First name:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" [(ngModel)]="writer.firstName"
+                            class="form-control {{firstNameInput.invalid ? 'is-invalid' : ''}}" id="firstNameInput"
+                            name="firstName" placeholder="Enter writer first name" required #firstNameInput="ngModel">
+                    </div>
+                </div>
+
+                <!-- Last Name -->
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label for="lastNameInput" class="col-form-label">Last name:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" [(ngModel)]="writer.lastName"
+                            class="form-control {{lastNameInput.invalid ? 'is-invalid' : ''}}" id="lastNameInput"
+                            name="lastName" placeholder="Enter writer last name" required #lastNameInput="ngModel">
+                    </div>
+                </div>
+
+                <!--Buttons-->
+                <div class="form-group row mx-auto">
+                    <button class="btn btn-info" type="submit" [disabled]="!writerForm.form.valid">Save</button>
+                    <a class="btn btn-info ml-auto" routerLink="{{backLink}}" role="button">Back</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</ng-template>

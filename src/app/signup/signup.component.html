@@ -1,0 +1,62 @@
+<div *ngIf="isSignedUp; else signupForm">
+    Your registration is successful. Please login!
+</div>
+
+<ng-template #signupForm>
+
+    <div class="card">
+        <div class="card-body">
+
+            <form (ngSubmit)="onSubmit()" #f="ngForm">
+
+                <div *ngIf="isSignUpFailed" class="alert alert-danger">
+                    Signup failed! {{errorMessage}}
+                </div>
+
+                <!-- Username -->
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label for="usernameInput" class="col-form-label">Username:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" [(ngModel)]="signupInfo.username" #username="ngModel"
+                            class="form-control {{username.invalid ? 'is-invalid' : ''}}" id="usernameInput"
+                            name="usernameInput" placeholder="Username" required minlength="3">
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label for="passwordInput" class="col-form-label">Password:</label>
+                    </div>
+                    <div class="col">
+                        <input type="password" [(ngModel)]="signupInfo.password" #password="ngModel"
+                            class="form-control {{password.invalid ? 'is-invalid' : ''}}" id="passwordInput"
+                            name="passwordInput" placeholder="Password" required minlength="3">
+                    </div>
+                </div>
+
+                <!-- Password Confirmation -->
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label for="passwordConfirmationInput" class="col-form-label">Confirm password:</label>
+                    </div>
+                    <div class="col">
+                        <input type="password" [(ngModel)]="signupInfo.passwordConfirmation"
+                            #passwordConfirmation="ngModel"
+                            class="form-control {{passwordConfirmation.invalid ? 'is-invalid' : ''}}"
+                            id="passwordConfirmationInput" name="passwordConfirmationInput" placeholder="Password"
+                            required minlength="3">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary" [disabled]="!f.form.valid" type="submit">Sign Up</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</ng-template>

@@ -1,0 +1,45 @@
+<div *ngIf="errorMessage.status === 404; else errorMsg">
+    <app-not-found-page></app-not-found-page>
+</div>
+
+<ng-template #errorMsg>
+    <div *ngIf="errorMessage.status === 401; else bookTable">
+        <div class="alert alert-danger">{{errorMessage.message}}</div>
+    </div>
+</ng-template>
+
+<ng-template #bookTable>
+    <div class="card">
+        <div class="card-body">
+
+            <div class="form-group row" *ngIf="isAdmin">
+                <div class="col">
+                    <a class="btn btn-info" routerLink="/books/add">Add new book</a>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Book name</th>
+                        <th scope="col">Writer</th>
+                        <th scope="col">Genres</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let book of books">
+                        <td>{{ book.id }}</td>
+                        <td><a routerLink="/books/{{book.id}}">{{book.bookName}}</a></td>
+                        <td><a routerLink="/writers/{{book.writer.id}}">
+                                {{book.writer.lastName}}, {{book.writer.firstName}}</a></td>
+                        <td>
+                            <span *ngFor="let genre of book.genres">{{genre}} </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</ng-template>

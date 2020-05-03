@@ -1,0 +1,28 @@
+<div class="card" 
+[ngClass]="{
+    'negative' : review.assessment === 'NEGATIVE',
+    'neutral'  : review.assessment === 'NEUTRAL',
+    'positive' : review.assessment === 'POSITIVE'
+  }"
+>
+    <div class="card-header" *ngIf="isUserPage || isBookPage">
+        <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item" *ngIf="isUserPage">
+                <a class="nav-link" routerLink="/books/{{review.bookId}}">{{review.bookName}}</a>
+            </li>
+            <li class="nav-item" *ngIf="isBookPage">
+                <a class="nav-link" routerLink="/users/{{review.authorId}}">{{review.username}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <p class="card-text">{{review.text}}</p>
+    </div>
+    <div class="card-footer" *ngIf="review.authorId === currentUser.id || isCurrentUserAdmin">
+        <div class="d-flex justify-content-between">
+            <!-- Actions -->
+            <a *ngIf="isBookPage" class="card-link" href="javascript:void(0);" (click)="editReviewEvent()">Edit</a>
+            <a class="card-link" href="javascript:void(0);" (click)="deleteReviewEvent()">Delete</a>
+        </div>
+    </div>
+</div>

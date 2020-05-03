@@ -1,0 +1,14 @@
+<div class="form-group" *ngIf="isBookPage" #reviewForm>
+    <app-review-form [review]="formReview" [errorMessage]="reviewFormErrorMessage" (onSaveAction)="saveReview($event)"
+        (onUpdateAction)="updateReview($event)">
+    </app-review-form>
+</div>
+
+<div class="form-group" *ngFor="let review of reviews">
+
+    <app-review-card [review]="review" [currentUser]="currentUser" [isCurrentUserAdmin]="isCurrentUserAdmin"
+        [isBookPage]="isBookPage" [isUserPage]="isUserPage" (onDelete)="deleteReviewEventListener($event)"
+        (onEdit)="editReviewEventListener($event)">
+    </app-review-card>
+
+</div>

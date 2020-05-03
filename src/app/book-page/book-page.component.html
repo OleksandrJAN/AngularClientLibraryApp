@@ -1,0 +1,99 @@
+<div *ngIf="errorMessage.status === 404; else errorMsg">
+    <app-not-found-page></app-not-found-page>
+</div>
+
+<ng-template #errorMsg>
+    <div *ngIf="errorMessage.status === 401; else bookPage">
+        <div class="alert alert-danger">{{errorMessage.message}}</div>
+    </div>
+</ng-template>
+
+<ng-template #bookPage>
+    <div class="form-group row">
+
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Book Name -->
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="bookNameInput" class="col-form-label">Book name:</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" [ngModel]="book.bookName" class="form-control" id="bookNameInput"
+                                name="bookNameInput" readonly>
+                        </div>
+                    </div>
+
+                    <!--Annotation-->
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="annotationTextArea" class="col-form-label">Book annotation:</label>
+                        </div>
+                        <div class="col">
+                            <textarea [ngModel]="book.annotation" class="form-control" name="annotation"
+                                id="annotationTextArea" rows="6" readonly>
+                                {{book.annotation}}
+                            </textarea>
+                        </div>
+                    </div>
+
+                    <!--Author-->
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="selectedWriter" class="col-form-label">Writer:</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" value="{{book.writer?.lastName}}, {{book.writer?.firstName}}"
+                                class="form-control" id="selectedWriter" name="selectedWriter" readonly>
+                        </div>
+                    </div>
+
+                    <!--Genres-->
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="bookGenres" class="col-form-label">Genres:</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" [ngModel]="book.genres" class="form-control" id="bookGenres"
+                                name="bookGenres" readonly>
+                        </div>
+                    </div>
+
+                    <!--Publication date-->
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="publicationDateInput" class="col-form-label">Publication date:</label>
+                        </div>
+                        <div class="col">
+                            <input type="date" [ngModel]="book.publicationDate" class="form-control"
+                                id="publicationDateInput" name="publicationDate" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="form-group row mx-auto" *ngIf="isCurrentUserAdmin">
+                        <a class="btn btn-warning" routerLink="edit" role="button">Edit</a>
+                        <a class="btn btn-secondary ml-auto text-white" role="button" (click)="deleteBook()">Delete</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Poster File -->
+        <div class="col-md-3">
+            <img class="img-fluid img-thumbnail" [src]="image">
+        </div>
+
+    </div>
+
+    <!-- Book Reviews -->
+    <div class="mt-5">
+        <app-review-list [currentUser]="currentUser" [isCurrentUserAdmin]="isCurrentUserAdmin" [reviews]="reviews"
+            [bookId]="book.id" [isBookPage]="true"></app-review-list>
+    </div>
+
+
+</ng-template>

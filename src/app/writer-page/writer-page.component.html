@@ -1,0 +1,65 @@
+<div *ngIf="errorMessage.status === 404; else errorMsg">
+    <app-not-found-page></app-not-found-page>
+</div>
+
+<ng-template #errorMsg>
+    <div *ngIf="errorMessage.status === 401; else writerPage">
+        <div class="alert alert-danger">{{errorMessage.message}}</div>
+    </div>
+</ng-template>
+
+
+<ng-template #writerPage>
+    <div class="card">
+        <div class="card-body">
+
+            <!-- First Name -->
+            <div class="form-group row">
+                <div class="col-md-2">
+                    <label for="firstNameInput" class="col-form-label">First name:</label>
+                </div>
+                <div class="col">
+                    <input type="text" [ngModel]="writer.firstName" class="form-control" id="firstNameInput"
+                        name="firstName" readonly>
+                </div>
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group row">
+                <div class="col-md-2">
+                    <label for="lastNameInput" class="col-form-label">Last name:</label>
+                </div>
+                <div class="col">
+                    <input type="text" [ngModel]="writer.lastName" class="form-control" id="lastNameInput"
+                        name="lastName" readonly>
+                </div>
+            </div>
+
+            <!--Actions-->
+            <div class="form-group row mx-auto" *ngIf="isCurrentUserAdmin">
+                <a class="btn btn-warning" routerLink="edit" role="button">Edit</a>
+                <a class="btn btn-secondary text-white ml-auto" role="button" (click)="deleteWriter()">Delete</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Writer Books -->
+    <div class="form-group mt-5">
+        <div class="form-group" *ngFor="let book of books">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-pills card-header-pills">
+                        <li class="nav-item">
+                          <a class="nav-link"routerLink="/books/{{book.id}}">{{book.bookName}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{book.annotation}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-template>

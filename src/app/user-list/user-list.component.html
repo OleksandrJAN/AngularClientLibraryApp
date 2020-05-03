@@ -1,0 +1,35 @@
+<div *ngIf="errorMessage.status === 404; else errorMsg">
+    <app-not-found-page></app-not-found-page>
+</div>
+
+<ng-template #errorMsg>
+    <div *ngIf="errorMessage.status === 401; else userTable">
+        <div class="alert alert-danger">{{errorMessage.message}}</div>
+    </div>
+</ng-template>
+
+
+<ng-template #userTable>
+    <div class="card">
+        <div class="card-body">
+
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Roles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of users">
+                        <td>{{user.id}}</td>
+                        <td><a routerLink="/users/{{user.id}}">{{user.username}}</a></td>
+                        <td>{{user.roles}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</ng-template>

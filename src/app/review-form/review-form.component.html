@@ -1,0 +1,43 @@
+<div class="card">
+    <div class="card-body">
+
+        <div *ngIf="errorMessage.status === 400">
+            <div class="alert alert-danger">{{errorMessage.message}}</div>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" #reviewForm="ngForm">
+
+            <!-- Review Assessment DropList -->
+            <div class="form-group row">
+                <div class="col-md-2">
+                    <label for="assessmentList" class="col-form-label">Choose assessment:</label>
+                </div>
+
+                <div class="col">
+                    <select [(ngModel)]="review.assessment" #assessmentList="ngModel"
+                        class="custom-select" name="assessmentList"
+                        id="assessmentList" required>
+                        <option *ngFor="let assessment of assessments" [ngValue]="assessment">
+                            {{assessment}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Text -->
+            <div class="form-group">
+                <textarea [(ngModel)]="review.text" #reviewTextArea="ngModel"
+                    class="form-control" name="reviewText"
+                    id="reviewTextTextArea" rows="6" placeholder="Enter review text" required maxlength="2047">
+                    {{review.text}}
+                </textarea>
+            </div>
+
+            <!--Buttons-->
+            <div class="form-group row mx-auto">
+                <button class="btn btn-info" type="submit" [disabled]="!reviewForm.form.valid">Save</button>
+            </div>
+        </form>
+
+    </div>
+</div>

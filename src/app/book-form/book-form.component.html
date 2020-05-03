@@ -1,0 +1,129 @@
+<div *ngIf="errorMessage.status === 404; else errorMsg">
+    <app-not-found-page></app-not-found-page>
+</div>
+
+<ng-template #errorMsg>
+    <div *ngIf="errorMessage.status === 401 || errorMessage.status === 403; else form">
+        <div class="alert alert-danger">{{errorMessage.message}}</div>
+    </div>
+</ng-template>
+
+<ng-template #form>
+    <div class="card">
+        <div class="card-body">
+
+            <div *ngIf="errorMessage.status === 400">
+                <div class="alert alert-danger">{{errorMessage.message}}</div>
+            </div>
+
+            <form (ngSubmit)="onSubmit()" #bookForm="ngForm">
+                <!-- Writer DropList -->
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label for="writerList" class="col-form-label">Choose writer:</label>
+                    </div>
+
+                    <div class="col">
+                        <select [(ngModel)]="book.writer" #writerList="ngModel"
+                            class="custom-select {{!book.writer ? 'is-invalid' : ''}}" name="writerList" id="writerList"
+                            required>
+                            <!-- не работает [selected]="writer === book.writer"?! (idk) -->
+                            <option *ngIf="book.writer" selected disabled [ngValue]="book.writer">
+                                {{book.writer?.lastName}}, {{book.writer?.firstName}}
+                            </option>
+                            <option *ngFor="let writer of writers" [ngValue]="writer">
+                                {{writer.lastName}}, {{writer.firstName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="row">
+                            <a class="btn btn-info ml-3" role="button" routerLink="/writers/add">New</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book Name -->
+                <div class="form-group row">
+                    <div class="col-md-2">
+                        <label for="bookNameInput" class="col-form-label">Book name:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" [(ngModel)]="book.bookName" #bookNameInput="ngModel"
+                            class="form-control {{bookNameInput.invalid ? 'is-invalid' : ''}}" id="bookNameInput"
+                            name="bookNameInput" placeholder="Enter book name" required>
+                    </div>
+                </div>
+
+                <!-- Annotation -->
+                <div class="form-group">
+                    <textarea [(ngModel)]="book.annotation" #annotationTextArea="ngModel"
+                        class="form-control {{annotationTextArea.invalid ? 'is-invalid' : ''}}" name="annotation"
+                        id="annotationTextArea" rows="6" placeholder="Enter annotation" required>
+                        {{book.annotation}}
+                    </textarea>
+                </div>
+
+                <!-- Genres -->
+                <div class="form-group row mx-auto">
+                    <div class="form-control {{book.genres.length === 0 ? 'is-invalid' : '' }}">
+                        <div class="btn-group" role="group">
+
+                            <div *ngFor="let genre of allGenres" class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="form-check form-check-inline">
+                                        <input [checked]="checkGenre(genre)" (change)="changeGenre(genre, $event)"
+                                            class="form-check-input" id="{{genre}}" name="{{genre}}" type="checkbox">
+                                        <label class="form-check-label" for="{{genre}}">{{genre}}</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <!--Publication date-->
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <label for="publicationDateInput" class="col-form-label">Publication date:</label>
+                            </div>
+                            <div class="col">
+                                <input [(ngModel)]="book.publicationDate" #publicationDateInput="ngModel"
+                                    class="form-control {{publicationDateInput.invalid ? 'is-invalid' : ''}}"
+                                    id="publicationDateInput" name="publicationDateInput" type="date"
+                                    placeholder="Enter book name" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--File Chooser-->
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="posterFileAddon">Poster</span>
+                            </div>
+                            <div class="custom-file">
+                                <label class="custom-file-label"
+                                    for="posterFile">{{poster ? poster.name : 'Choose file'}}</label>
+                                <input (change)="onfileSelected($event)" (ngModel)="poster" class="custom-file-input"
+                                    id="posterFile" name="posterFile" type="file" accept="image/*"
+                                    aria-describedby="posterFileAddon" [required]="!putAction" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Buttons-->
+                <div class="form-group row mx-auto">
+                    <button class="btn btn-info" [disabled]="!bookForm.form.valid || book.genres.length === 0"
+                        type="submit">Save</button>
+                    <a class="btn btn-info ml-auto" routerLink="{{backLink}}" role="button">Back</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</ng-template>

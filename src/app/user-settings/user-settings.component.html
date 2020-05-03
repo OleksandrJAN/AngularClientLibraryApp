@@ -1,0 +1,143 @@
+<div *ngIf="initErrorMessage.status === 404; else errorMsg">
+    <app-not-found-page></app-not-found-page>
+</div>
+
+<ng-template #errorMsg>
+    <div *ngIf="initErrorMessage.status === 401 || initErrorMessage.status === 403; else userSettingsPage">
+        <div class="alert alert-danger">{{initErrorMessage.message}}</div>
+    </div>
+</ng-template>
+
+<ng-template #userSettingsPage>
+
+    <div class="card">
+        <div class="card-body">
+
+            <!-- Username -->
+            <div class="form-group row">
+                <div class="col-md-2">
+                    <label for="usernameInput" class="col-form-label">Username:</label>
+                </div>
+                <div class="col">
+                    <input type="text" [ngModel]="userProfile.username" class="form-control" id="usernameInput"
+                        name="username" readonly>
+                </div>
+            </div>
+
+            <!-- Password Update Form -->
+            <form (ngSubmit)="onPasswordSubmit()" #passwordForm="ngForm" *ngIf="currentUser.id === userProfile.id">
+                <hr>
+
+                <div *ngIf="passwordUpdateErrorMessage.status === 400">
+                    <div class="alert alert-danger">{{passwordUpdateErrorMessage.message}}</div>
+                </div>
+
+                <div *ngIf="passwordUpdated">
+                    <div class="alert alert-success">Password updated!</div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+
+                        <!--current password confirmation-->
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label for="oldPasswordInput" class="col-form-label">Current password:</label>
+                            </div>
+                            <div class="col">
+                                <input type="password" [(ngModel)]="passwordDto.currentPasswordConfirmation"
+                                    class="form-control" id="oldPasswordInput" name="oldPasswordInput"
+                                    placeholder="Password" required minlength="3">
+                            </div>
+                        </div>
+
+                        <!--new password-->
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label for="newPasswordInput" class="col-form-label">New password:</label>
+                            </div>
+                            <div class="col">
+                                <input type="password" [(ngModel)]="passwordDto.newPassword" class="form-control"
+                                    id="newPasswordInput" name="newPasswordInput" placeholder="Password" required
+                                    minlength="3">
+                            </div>
+                        </div>
+
+                        <!--new password confirmation-->
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label for="newPasswordConfirmationInput" class="col-form-label">Confirm new
+                                    password:</label>
+                            </div>
+                            <div class="col">
+                                <input type="password" [(ngModel)]="passwordDto.newPasswordConfirmation"
+                                    class="form-control" id="newPasswordConfirmationInput"
+                                    name="newPasswordConfirmationInput" placeholder="Password" required minlength="3">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-1">
+                        <button class="btn btn-primary" [disabled]="!passwordForm.form.valid"
+                            type="submit">Save</button>
+                    </div>
+
+                </div>
+            </form>
+
+            <!-- Roles Update Form -->
+            <form (ngSubmit)="onRolesSubmit()" *ngIf="isCurrentUserAdmin && currentUser.id !== userProfile.id">
+                <hr>
+
+                <div *ngIf="roleUpdateErrorMessage.status === 400">
+                    <div class="alert alert-danger">{{roleUpdateErrorMessage.message}}</div>
+                </div>
+
+                <div *ngIf="roleUpdated">
+                    <div class="alert alert-success">Role updated!</div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col">
+
+                        <!--User Roles-->
+                        <div class="form-group row mx-auto">
+                            <div class="form-control {{userProfile.roles.length === 0 ? 'is-invalid' : '' }}">
+                                <div class="btn-group" role="group">
+
+                                    <div *ngFor="let role of allRoles" class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="form-check form-check-inline">
+                                                <input [checked]="checkRole(role)" (change)="changeRole(role, $event)"
+                                                    class="form-check-input" id="{{role}}" name="{{role}}"
+                                                    type="checkbox">
+                                                <label class="form-check-label" for="{{role}}">{{role}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!--Save Button-->
+                    <div class="col-md-1">
+                        <button class="btn btn-primary float-right" [disabled]="userProfile.roles.length === 0"
+                            type="submit">Save</button>
+                    </div>
+                </div>
+                <hr>
+            </form>
+
+
+            <!--Actions-->
+            <div class="form-group row mx-auto" *ngIf="isCurrentUserAdmin && currentUser.id !== userProfile.id">
+                <a class="btn btn-secondary ml-auto text-white" role="button" (click)="deleteUser()">Delete user</a>
+            </div>
+
+        </div>
+    </div>
+</ng-template>
