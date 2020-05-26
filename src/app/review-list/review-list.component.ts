@@ -71,7 +71,7 @@ export class ReviewListComponent implements OnInit {
 
   deleteReviewEventListener(review: Review) {
     this.reviewService.delete(review).subscribe(
-      () => this.reviews.splice(this.reviews.indexOf(review)),
+      () => this.reviews.splice(this.reviews.indexOf(review), 1),
       (error: HttpErrorResponse) => {
         // ошибка может произойти если кто то уже удалил рецензию
         window.location.reload();

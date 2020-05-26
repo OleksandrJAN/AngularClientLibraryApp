@@ -10,9 +10,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class AppComponent implements OnInit {
 
-  // реализовать refresh_token
-  // панель поиска юзеров
-
   currentUser: User = new User();
   isCurrentUserAuth: boolean = false;
   isCurrentUserAdmin: boolean = false;
