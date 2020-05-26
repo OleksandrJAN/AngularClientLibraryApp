@@ -107,7 +107,7 @@
                             </div>
                             <div class="custom-file">
                                 <label class="custom-file-label"
-                                    for="posterFile">{{poster ? poster.name : 'Choose file'}}</label>
+                                    for="posterFile">{{poster ? posterFileName : 'Choose file'}}</label>
                                 <input (change)="onfileSelected($event)" (ngModel)="poster" class="custom-file-input"
                                     id="posterFile" name="posterFile" type="file" accept="image/*"
                                     aria-describedby="posterFileAddon" [required]="!putAction" />

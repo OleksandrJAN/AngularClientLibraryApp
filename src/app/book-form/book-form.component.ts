@@ -31,6 +31,7 @@ export class BookFormComponent implements OnInit {
 
   backLink: string = "/books";
   putAction: boolean = false;
+  posterFileName: string;
 
   errorMessage: ErrorMessage = new ErrorMessage();
 
@@ -49,6 +50,15 @@ export class BookFormComponent implements OnInit {
 
   onfileSelected($event) {
     this.poster = $event.target.files[0];
+    if (this.poster !== undefined) {
+      let bigSize: boolean = this.poster.name.length > 40;
+      if (!bigSize) {
+        this.posterFileName = this.poster.name.slice(0, 40);
+      } else {
+        this.posterFileName = this.poster.name.slice(0, 37);
+        this.posterFileName += "...";
+      }
+    }
   }
   
 
